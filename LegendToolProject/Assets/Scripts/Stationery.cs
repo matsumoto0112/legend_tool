@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartPoint : MapObject
+public class Stationery : MapObject
 {
     [Space]
-    [Header("プレイヤー用パラメータ")]
+    [Header("文房具のパラメータ")]
     public int modelID;
-    
+    public int skillID;
+    public int generateTurn;
+
     public override string Output()
     {
-        string text = "start_point";
+        string text = "stationery";
 
         text += "," + transform.position.x;
         text += "," + transform.position.y;
@@ -23,6 +25,8 @@ public class StartPoint : MapObject
         text += "," + transform.lossyScale.z;
 
         text += "," + modelID;
+        text += "," + skillID;
+        text += "," + generateTurn;
 
         text += "\n";
 
@@ -31,6 +35,6 @@ public class StartPoint : MapObject
 
     public override void CheckActiveTurn(int turnCount)
     {
-        gameObject.SetActive(SceneInformation.isAllView || turnCount == 0);
+        gameObject.SetActive(SceneInformation.isAllView || turnCount >= generateTurn);
     }
 }

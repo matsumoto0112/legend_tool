@@ -6,9 +6,11 @@ using UnityEditor;
 [InitializeOnLoad]
 public class SceneInformation
 {
+    public static int turnCount = 0;
+    public static bool isAllView = false;
+
     private static string mapName;
     private static int backgroundID = -1;
-    private static int turnsCount = 0;
     private static int startPointCount = 0;
     private static int enemyCount = 0;
     private static int bossCount = 0;
@@ -16,6 +18,8 @@ public class SceneInformation
     private static int obstacleCount = 0;
     private static int graffitiCount = 0;
     private static int stationeryCount = 0;
+
+    private static List<GameObject> mapObjects = new List<GameObject>();
 
     static SceneInformation()
     {
@@ -25,17 +29,23 @@ public class SceneInformation
     //マップオブジェクト情報を更新する処理
     private static void UpdateObjectInfomations()
     {
-        turnsCount = 0;
+        //各情報を初期化
         startPointCount = 0;
         enemyCount = 0;
         bossCount = 0;
         floorCount = 0;
         obstacleCount = 0;
+        graffitiCount = 0;
+        stationeryCount = 0;
+        mapObjects = new List<GameObject>();
 
+        //MapObjectを全て取得
         Object[] allGameObject = Resources.FindObjectsOfTypeAll(typeof(MapObject));
-
+        
         foreach (MapObject obj in allGameObject)
         {
+            mapObjects.Add(obj.gameObject);
+
             switch (obj.objectType)
             {
                 case MapObject.ObjectType.None:
@@ -81,17 +91,27 @@ public class SceneInformation
             Screen.height / EditorGUIUtility.pixelsPerPoint));
         Handles.BeginGUI();
 
+        //現在のターン数を表示&編集する
+        int beforeTurnCount = turnCount;
+        turnCount = EditorGUILayout.IntField("表示中のターン数", turnCount,
+            GUILayout.MaxWidth(32.0f * 8.0f));
+
+        bool beforeIsAllView = isAllView;
+        isAllView = EditorGUILayout.Toggle("全て表示するか", isAllView);
+        if (beforeIsAllView != isAllView)
+            TurnChange();
+
         //マップ名を表示&編集する
-        mapName = EditorGUILayout.TextField("Map Name", mapName, 
+        mapName = EditorGUILayout.TextField("Map Name", mapName,
             GUILayout.MaxWidth(32.0f * 8.0f));
 
         //現在のターン数を表示&編集する
         backgroundID = EditorGUILayout.IntField("背景ID", backgroundID,
             GUILayout.MaxWidth(32.0f * 8.0f));
 
-        //現在のターン数を表示&編集する
-        turnsCount = EditorGUILayout.IntField("表示中のターン数", turnsCount,
-            GUILayout.MaxWidth(32.0f * 8.0f));
+        //ターン数が変わっているなら
+        if (turnCount != beforeTurnCount)
+            TurnChange();
 
         //各オブジェクト情報を表示する
         DrawObjectInformations();
@@ -104,8 +124,8 @@ public class SceneInformation
         }
 
         //描画終了処理
-        Handles.EndGUI();
         GUILayout.EndArea();
+        Handles.EndGUI();
     }
 
     //各オブジェクト情報を表示するメソッド
@@ -149,6 +169,19 @@ public class SceneInformation
         }
     }
 
+    private static void TurnChange()
+    {
+        //オブジェクト情報を更新
+        UpdateObjectInfomations();
+
+        //現在ターンに関係がある場合はアクティ
+        foreach (GameObject obj in mapObjects)
+        {
+            obj.GetComponent<MapObject>().CheckActiveTurn(turnCount);
+        }
+
+    }
+
     private static void Output()
     {
         UpdateObjectInfomations();
@@ -172,63 +205,68 @@ public class SceneInformation
 
         //ステージ情報を文字列に
         index[0] = mapName + "," + backgroundID + "\n";
-        int count = 1;
+        //int count = 1;
 
-        //開始地点を文字列に
-        for(int i = 0; i < startPointCount; i++)
-        {
-            index[count + i] = "startPoint";
-            index[count + i] += "\n";
-        }
-        count += startPointCount;
+        ////開始地点を文字列に
+        //for (int i = 0; i < startPointCount; i++)
+        //{
+        //    index[count + i] = "startPoint";
+        //    index[count + i] += "\n";
+        //}
+        //count += startPointCount;
 
-        //敵の情報を文字列に
-        for (int i = 0; i < enemyCount; i++)
-        {
-            index[count + i] = "enemy";
-            index[count + i] += "\n";
-        }
-        count += enemyCount;
+        ////敵の情報を文字列に
+        //for (int i = 0; i < enemyCount; i++)
+        //{
+        //    index[count + i] = "enemy";
+        //    index[count + i] += "\n";
+        //}
+        //count += enemyCount;
 
-        //ボスの情報を文字列に
-        for (int i = 0; i < bossCount; i++)
-        {
-            index[count + i] = "boss";
-            index[count + i] += "\n";
-        }
-        count += bossCount;
+        ////ボスの情報を文字列に
+        //for (int i = 0; i < bossCount; i++)
+        //{
+        //    index[count + i] = "boss";
+        //    index[count + i] += "\n";
+        //}
+        //count += bossCount;
 
-        //床の情報を文字列に
-        for (int i = 0; i < floorCount; i++)
-        {
-            index[count + i] = "floor";
-            index[count + i] += "\n";
-        }
-        count += floorCount;
+        ////床の情報を文字列に
+        //for (int i = 0; i < floorCount; i++)
+        //{
+        //    index[count + i] = "floor";
+        //    index[count + i] += "\n";
+        //}
+        //count += floorCount;
 
-        //障害物の情報を文字列に
-        for (int i = 0; i < obstacleCount; i++)
-        {
-            index[count + i] = "obstacle";
-            index[count + i] += "\n";
-        }
-        count += obstacleCount  ;
+        ////障害物の情報を文字列に
+        //for (int i = 0; i < obstacleCount; i++)
+        //{
+        //    index[count + i] = "obstacle";
+        //    index[count + i] += "\n";
+        //}
+        //count += obstacleCount;
 
-        //落書きの情報を文字列に
-        for (int i = 0; i < graffitiCount; i++)
-        {
-            index[count + i] = "graffiti";
-            index[count + i] += "\n";
-        }
-        count += graffitiCount;
+        ////落書きの情報を文字列に
+        //for (int i = 0; i < graffitiCount; i++)
+        //{
+        //    index[count + i] = "graffiti";
+        //    index[count + i] += "\n";
+        //}
+        //count += graffitiCount;
 
-        //文房具の情報を文字列に
-        for (int i = 0; i < stationeryCount; i++)
+        ////文房具の情報を文字列に
+        //for (int i = 0; i < stationeryCount; i++)
+        //{
+        //    index[count + i] = "stationery";
+        //    index[count + i] += "\n";
+        //}
+        //count += stationeryCount;
+
+        for (int i = 0; i < mapObjects.Count; i++)
         {
-            index[count + i] = "stationery";
-            index[count + i] += "\n";
+            index[1 + i] = mapObjects[i].GetComponent<MapObject>().Output();
         }
-        count += stationeryCount;
 
         FileOutput.Output(filePath, index);
     }

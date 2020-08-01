@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartPoint : MapObject
+public class Graffiti : MapObject
 {
     [Space]
-    [Header("プレイヤー用パラメータ")]
-    public int modelID;
-    
+    [Header("落書きのパラメータ")]
+    public int textureID;
+
     public override string Output()
     {
-        string text = "start_point";
+        string text = "graffiti";
 
         text += "," + transform.position.x;
         text += "," + transform.position.y;
@@ -22,15 +22,10 @@ public class StartPoint : MapObject
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
 
-        text += "," + modelID;
+        text += "," + textureID;
 
         text += "\n";
 
         return text;
-    }
-
-    public override void CheckActiveTurn(int turnCount)
-    {
-        gameObject.SetActive(SceneInformation.isAllView || turnCount == 0);
     }
 }

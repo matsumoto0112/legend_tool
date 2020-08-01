@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartPoint : MapObject
+public class Obstacle : MapObject
 {
     [Space]
-    [Header("プレイヤー用パラメータ")]
+    [Header("障害物のパラメータ")]
     public int modelID;
-    
+
     public override string Output()
     {
-        string text = "start_point";
+        string text = "obstacle";
 
         text += "," + transform.position.x;
         text += "," + transform.position.y;
@@ -27,10 +27,5 @@ public class StartPoint : MapObject
         text += "\n";
 
         return text;
-    }
-
-    public override void CheckActiveTurn(int turnCount)
-    {
-        gameObject.SetActive(SceneInformation.isAllView || turnCount == 0);
     }
 }
