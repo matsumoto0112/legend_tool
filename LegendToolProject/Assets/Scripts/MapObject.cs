@@ -41,6 +41,10 @@ public class MapObject : MonoBehaviour
             case ObjectType.Floor:
                 text += "floor";
                 break;
+
+            case ObjectType.Obstacle:
+                text += "Onstacle";
+                break;
         }
 
         text += "," + transform.position.x;
