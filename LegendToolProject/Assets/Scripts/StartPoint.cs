@@ -7,10 +7,17 @@ public class StartPoint : MapObject
     [Space]
     [Header("プレイヤー用パラメータ")]
     public int modelID;
-    
+
+    public override void Input(float[] index)
+    {
+        base.Input(index);
+
+        modelID = (int)(index[12]);
+    }
+
     public override string Output()
     {
-        string text = "start_point";
+        string text = "startpoint";
 
         text += "," + transform.position.x;
         text += "," + transform.position.y;
@@ -21,6 +28,10 @@ public class StartPoint : MapObject
         text += "," + transform.lossyScale.x;
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
+
+        text += "," + mass;
+        text += "," + yg;
+        text += "," + dc;
 
         text += "," + modelID;
 

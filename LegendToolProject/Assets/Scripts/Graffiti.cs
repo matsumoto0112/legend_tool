@@ -8,6 +8,13 @@ public class Graffiti : MapObject
     [Header("落書きのパラメータ")]
     public int textureID;
 
+    public override void Input(float[] index)
+    {
+        base.Input(index);
+
+        textureID = (int)(index[12]);
+    }
+
     public override string Output()
     {
         string text = "graffiti";
@@ -21,6 +28,10 @@ public class Graffiti : MapObject
         text += "," + transform.lossyScale.x;
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
+
+        text += "," + mass;
+        text += "," + yg;
+        text += "," + dc;
 
         text += "," + textureID;
 

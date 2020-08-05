@@ -10,6 +10,15 @@ public class Stationery : MapObject
     public int skillID;
     public int generateTurn;
 
+    public override void Input(float[] index)
+    {
+        base.Input(index);
+
+        modelID = (int)(index[12]);
+        skillID = (int)(index[13]);
+        generateTurn = (int)(index[14]);
+    }
+
     public override string Output()
     {
         string text = "stationery";
@@ -23,6 +32,10 @@ public class Stationery : MapObject
         text += "," + transform.lossyScale.x;
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
+
+        text += "," + mass;
+        text += "," + yg;
+        text += "," + dc;
 
         text += "," + modelID;
         text += "," + skillID;

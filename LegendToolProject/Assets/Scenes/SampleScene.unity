@@ -1228,13 +1228,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 946303496}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa0562badb189744b7410bec3afb464, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f75848f7ba0001478642deb4831489e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 5
   mass: 0
   yg: 0
   dc: 0.5
+  modelID: 0
 --- !u!23 &946303498
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1605,13 +1606,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1478808891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa0562badb189744b7410bec3afb464, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f75848f7ba0001478642deb4831489e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 5
   mass: 0
   yg: 0
   dc: 0.5
+  modelID: 0
 --- !u!23 &1478808893
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1798,13 +1800,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1505382203}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfa0562badb189744b7410bec3afb464, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f75848f7ba0001478642deb4831489e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 5
   mass: 0
   yg: 0
   dc: 0.5
+  modelID: 0
 --- !u!23 &1505382205
 MeshRenderer:
   m_ObjectHideFlags: 0

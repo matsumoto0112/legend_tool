@@ -27,6 +27,17 @@ public class MapObject : MonoBehaviour
     public virtual void CheckActiveTurn(int turnCount)
     { }
 
+    public virtual void Input(float[] index)
+    {
+        transform.position = new Vector3(index[0], index[1], index[2]);
+        transform.rotation = Quaternion.Euler(index[3], index[4], index[5]);
+        transform.localScale = new Vector3(index[6], index[7], index[8]);
+
+        mass = index[9];
+        yg = index[10];
+        dc = index[11];
+    }
+
     //出力時のテキストを返す
     public virtual string Output()
     {
@@ -41,10 +52,6 @@ public class MapObject : MonoBehaviour
             case ObjectType.Floor:
                 text += "floor";
                 break;
-
-            case ObjectType.Obstacle:
-                text += "Onstacle";
-                break;
         }
 
         text += "," + transform.position.x;
@@ -56,7 +63,11 @@ public class MapObject : MonoBehaviour
         text += "," + transform.lossyScale.x;
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
-        
+
+        text += "," + mass;
+        text += "," + yg;
+        text += "," + dc;
+
         text += "\n";
 
         return text;

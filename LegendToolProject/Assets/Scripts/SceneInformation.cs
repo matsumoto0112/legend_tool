@@ -142,7 +142,7 @@ public class SceneInformation
                 return;
 
             //マップを再現
-            ObjectRevival(index);
+            ObjectRevival(readMapName, index);
         }
 
 
@@ -205,17 +205,16 @@ public class SceneInformation
 
     }
 
-    private static void ObjectRevival(string[] index)
+    private static void ObjectRevival(string readName, string[] index)
     {
         //オブジェクト情報を更新
         UpdateObjectInfomations();
 
+        //現在の設置されているオブジェクトを削除
         foreach (GameObject obj in mapObjects)
         {
             GameObject.DestroyImmediate(obj.gameObject);
         }
-
-        return;
 
         //プレファブのリストを作成
         List<GameObject> prefabs = new List<GameObject>();
@@ -227,7 +226,7 @@ public class SceneInformation
             //プレファブ以外は除外
             if (!AssetDatabase.GetAssetOrScenePath(obj).Contains(".prefab"))
                 continue;
-
+            
             prefabs.Add(obj.gameObject);
         }
 
@@ -235,26 +234,47 @@ public class SceneInformation
         {
             string[] info = text.Split(',');
 
-            //オブジェクトタイプの名前を取得
-            string[] objectNames = System.Enum.GetNames(typeof(MapObject.ObjectType));
+            if (info[0] == readName)
+            {
+                mapName = info[0];
+                backgroundID = int.Parse(info[1]);
+            }
 
             //オブジェクト名を判断
-            string objectName = "error";
-            foreach(string name in objectNames)
+            string prefabPath = "error";
+            for (int i = 0; i < prefabs.Count; i++)
             {
-                if (info[0] != name) continue;
+                string prefabName = System.Enum.GetName(typeof(MapObject.ObjectType), prefabs[i].GetComponent<MapObject>().objectType);
 
-                objectName = name;
+                if (info[0].ToLower() != prefabName.ToLower()) continue;
+                
+                prefabPath = AssetDatabase.GetAssetOrScenePath(prefabs[i]);
+                break;
             }
 
-            if (objectName == "error")
+            if (prefabPath == "error")
             {
                 Debug.Log("オブジェクトの生成に失敗しました。\n" + info[0] + "は、プレファブに登録されていません。");
-                return;
+                continue;
             }
 
-            //var prefab
-            
+            //オブジェクトの生成
+            var prefabObject = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            var obj = PrefabUtility.InstantiatePrefab(prefabObject) as GameObject;
+
+            Undo.RegisterCreatedObjectUndo(obj, "Create GameObject");
+
+            //オブジェクトの情報をfloat配列化
+            float[] floatInfo = new float[info.Length - 1];
+            for(int i = 1; i < info.Length; i++)
+            {
+                floatInfo[i - 1] = float.Parse(info[i]);
+            }
+
+            //オブジェクトの情報を反映
+            obj.GetComponent<MapObject>().Input(floatInfo);
+            obj.GetComponent<MapObject>().CheckActiveTurn(turnCount);
+
         }
 
         //オブジェクト情報を再読み込み
@@ -284,63 +304,6 @@ public class SceneInformation
 
         //ステージ情報を文字列に
         index[0] = mapName + "," + backgroundID + "\n";
-        //int count = 1;
-
-        ////開始地点を文字列に
-        //for (int i = 0; i < startPointCount; i++)
-        //{
-        //    index[count + i] = "startPoint";
-        //    index[count + i] += "\n";
-        //}
-        //count += startPointCount;
-
-        ////敵の情報を文字列に
-        //for (int i = 0; i < enemyCount; i++)
-        //{
-        //    index[count + i] = "enemy";
-        //    index[count + i] += "\n";
-        //}
-        //count += enemyCount;
-
-        ////ボスの情報を文字列に
-        //for (int i = 0; i < bossCount; i++)
-        //{
-        //    index[count + i] = "boss";
-        //    index[count + i] += "\n";
-        //}
-        //count += bossCount;
-
-        ////床の情報を文字列に
-        //for (int i = 0; i < floorCount; i++)
-        //{
-        //    index[count + i] = "floor";
-        //    index[count + i] += "\n";
-        //}
-        //count += floorCount;
-
-        ////障害物の情報を文字列に
-        //for (int i = 0; i < obstacleCount; i++)
-        //{
-        //    index[count + i] = "obstacle";
-        //    index[count + i] += "\n";
-        //}
-        //count += obstacleCount;
-
-        ////落書きの情報を文字列に
-        //for (int i = 0; i < graffitiCount; i++)
-        //{
-        //    index[count + i] = "graffiti";
-        //    index[count + i] += "\n";
-        //}
-        //count += graffitiCount;
-
-        ////文房具の情報を文字列に
-        //for (int i = 0; i < stationeryCount; i++)
-        //{
-        //    index[count + i] = "stationery";
-        //    index[count + i] += "\n";
-        //}
-        //count += stationeryCount;
 
         for (int i = 0; i < mapObjects.Count; i++)
         {

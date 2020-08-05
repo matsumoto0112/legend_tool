@@ -31,7 +31,6 @@ public class FileInput
         while(reader.BaseStream.Position != reader.BaseStream.Length)
         {
             string text = reader.ReadString();
-            Debug.Log(text);
 
             indexList.Add(text);
         }

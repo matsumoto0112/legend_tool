@@ -11,6 +11,16 @@ public class Boss : MapObject
     public int generateTurn;
     public int durability;
 
+    public override void Input(float[] index)
+    {
+        base.Input(index);
+        
+        modelID = (int)(index[12]);
+        bossID = (int)(index[13]);
+        generateTurn = (int)(index[14]);
+        durability = (int)(index[15]);
+    }
+
     public override string Output()
     {
         string text = "boss";
@@ -24,6 +34,10 @@ public class Boss : MapObject
         text += "," + transform.lossyScale.x;
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
+
+        text += "," + mass;
+        text += "," + yg;
+        text += "," + dc;
 
         text += "," + modelID;
         text += "," + bossID;

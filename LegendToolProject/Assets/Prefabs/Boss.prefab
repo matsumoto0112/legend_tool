@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5716099940906943441
 Transform:
   m_ObjectHideFlags: 0
@@ -98,5 +98,5 @@ MonoBehaviour:
   dc: 1
   modelID: 0
   bossID: 0
-  generateTurn: 10
+  generateTurn: 0
   durability: 0

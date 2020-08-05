@@ -8,6 +8,13 @@ public class Obstacle : MapObject
     [Header("障害物のパラメータ")]
     public int modelID;
 
+    public override void Input(float[] index)
+    {
+        base.Input(index);
+
+        modelID = (int)(index[12]);
+    }
+
     public override string Output()
     {
         string text = "obstacle";
@@ -21,6 +28,10 @@ public class Obstacle : MapObject
         text += "," + transform.lossyScale.x;
         text += "," + transform.lossyScale.y;
         text += "," + transform.lossyScale.z;
+
+        text += "," + mass;
+        text += "," + yg;
+        text += "," + dc;
 
         text += "," + modelID;
 
