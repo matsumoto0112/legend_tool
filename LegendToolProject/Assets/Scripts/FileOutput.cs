@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using System.Text;
 
 public class FileOutput
 {
@@ -29,6 +30,14 @@ public class FileOutput
         }
 
         write.Close();
+
+        Encoding encoding = Encoding.GetEncoding("Shift_JIS");
+        StreamWriter writer = new StreamWriter(filename.Replace(".bin",".txt"), true, encoding);
+        foreach (string text in index)
+        {
+            writer.Write(text);
+        }
+        writer.Close();
         Debug.Log("書き出し終了");
 
         return true;
