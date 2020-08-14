@@ -13,7 +13,8 @@ public class MapObject : MonoBehaviour
         Floor,
         Obstacle,
         Graffiti,
-        Stationery
+        Stationery,
+        SearchAI,
     }
 
     public ObjectType objectType;

@@ -300,7 +300,7 @@ public class SceneInformation
         //ファイルパスを設定
         string filePath = Application.dataPath + "/StageData/" + mapName + ".bin";
 
-        string[] index = new string[1 + startPointCount + enemyCount + bossCount + floorCount + obstacleCount + graffitiCount + stationeryCount];
+        string[] index = new string[1 + mapObjects.Count];
 
         //ステージ情報を文字列に
         index[0] = mapName + "," + backgroundID + "\n";
