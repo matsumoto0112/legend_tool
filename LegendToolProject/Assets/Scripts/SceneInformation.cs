@@ -20,6 +20,7 @@ public class SceneInformation
     private static int stationeryCount = 0;
 
     private static List<GameObject> mapObjects = new List<GameObject>();
+    private static SearchAI_Manager searchManager;
 
     static SceneInformation()
     {
@@ -86,6 +87,9 @@ public class SceneInformation
                     break;
             }
         }
+
+        Object[] searchAI_manager = Resources.FindObjectsOfTypeAll(typeof(SearchAI_Manager));
+        searchManager = (searchAI_manager == null || searchAI_manager.Length <= 0) ? null : searchAI_manager[0] as SearchAI_Manager;
     }
 
     //SceneViewへの描画
@@ -311,5 +315,10 @@ public class SceneInformation
         }
 
         FileOutput.Output(filePath, index);
+
+        if (searchManager != null)
+        {
+            searchManager.CreateText("/StageData/" + mapName + "_searchData");
+        }
     }
 }
