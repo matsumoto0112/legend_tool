@@ -15,6 +15,7 @@ public class MapObject : MonoBehaviour
         Graffiti,
         Stationery,
         SearchAI,
+        Camera,
     }
 
     public ObjectType objectType;
@@ -52,6 +53,10 @@ public class MapObject : MonoBehaviour
 
             case ObjectType.Floor:
                 text += "floor";
+                break;
+
+            case ObjectType.Camera:
+                text += "camera";
                 break;
         }
 
@@ -109,6 +114,10 @@ public class MapObject : MonoBehaviour
 
             case ObjectType.Stationery:
                 UnityEditor.Handles.Label(transform.position, "文房具", style);
+                break;
+
+            case ObjectType.Camera:
+                UnityEditor.Handles.Label(transform.position, "カメラ", style);
                 break;
         }
     }
