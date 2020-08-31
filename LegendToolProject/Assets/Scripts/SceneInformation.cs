@@ -18,6 +18,7 @@ public class SceneInformation
     private static int obstacleCount = 0;
     private static int graffitiCount = 0;
     private static int stationeryCount = 0;
+    private static int cameraCount = 0;
 
     private static List<GameObject> mapObjects = new List<GameObject>();
     private static SearchAI_Manager searchManager;
@@ -38,6 +39,7 @@ public class SceneInformation
         obstacleCount = 0;
         graffitiCount = 0;
         stationeryCount = 0;
+        cameraCount = 0;
         mapObjects = new List<GameObject>();
 
         //MapObjectを全て取得
@@ -84,6 +86,10 @@ public class SceneInformation
 
                 case MapObject.ObjectType.Stationery:
                     stationeryCount++;
+                    break;
+
+                case MapObject.ObjectType.Camera:
+                    cameraCount++;
                     break;
             }
         }
@@ -187,6 +193,8 @@ public class SceneInformation
 
         //文房具の数の表示
         GUILayout.Label("文房具の数 : " + stationeryCount);
+
+        GUILayout.Label("カメラの数 : " + cameraCount);
 
         //オブジェクト情報を更新するボタン
         if (GUILayout.Button("オブジェクト情報を更新",
