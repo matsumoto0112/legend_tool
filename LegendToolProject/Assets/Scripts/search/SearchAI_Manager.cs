@@ -52,6 +52,48 @@ public class SearchAI_Manager : MonoBehaviour
         return result;
     }
 
+    public void AddSearch(Vector3 position)
+    {
+        var obj = new GameObject("SearchAI [" + (transform.childCount) + "]");
+        obj.transform.parent = transform;
+        obj.transform.position = position;
+        var search = obj.AddComponent<SearchAI>();
+        search.AddLine();
+        searchList.Add(search);
+    }
+    public void CreateSearch(string[] searchIndex)
+    {
+        var children = transform.GetChildren();
+        int childCount = children.Count;
+        for (int i = 0; i < childCount; i++)
+        {
+            if (children[i] == null || children[i].gameObject == null) continue;
+#if UNITY_EDITOR
+            DestroyImmediate(children[i].gameObject);
+#else
+            Destroy(children[i].gameObject);
+#endif
+        }
+        searchList = new List<SearchAI>();
+        courseList = new List<SearchAI>();
+        foreach (var s in searchIndex)
+        {
+            string[] info = s.Split(',');
+            if (info.Length < 4) continue;
+            Vector3 pos = new Vector3(float.Parse(info[1]), float.Parse(info[2]), float.Parse(info[3]));
+            AddSearch(pos);
+        }
+        for (int i = 0; i < searchList.Count; i++)
+        {
+            string[] info = searchIndex[i].Split(',');
+            foreach (var s in info) Debug.Log(s);
+            for (int index = 4; index < info.Length; index++)
+            {
+                searchList[i].AddBranch(searchList[int.Parse(info[index])]);
+            }
+        }
+    }
+
     /// <summary>
     /// 道順設定
     /// </summary>
@@ -384,7 +426,7 @@ public class SearchAI_Manager_Editor : Editor
         GUILayout.BeginVertical(GUI.skin.box);
         {
             GUI.backgroundColor = Color.white;
-            var text = EditorGUILayout.TextField("File_Name",textFileName);
+            var text = EditorGUILayout.TextField("File_Name", textFileName);
             if (text != textFileName) textFileName = text;
 
             if (GUILayout.Button("CreateText"))

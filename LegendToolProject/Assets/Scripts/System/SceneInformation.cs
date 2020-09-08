@@ -153,6 +153,20 @@ public class SceneInformation
 
             //マップを再現
             ObjectRevival(readMapName, index);
+
+            if (searchManager == null)
+            {
+                searchManager = new SearchAI_Manager();
+                searchManager.transform.name = "SearchManager";
+            }
+
+            string searchPath = Application.dataPath + "/StageData/" + readMapName + "_searchData" + ".txt";
+            string[] searchIndex = FileInput.Input(searchPath);
+
+            if (index[0] == "error")
+                return;
+
+            searchManager.CreateSearch(searchIndex);
         }
 
 
