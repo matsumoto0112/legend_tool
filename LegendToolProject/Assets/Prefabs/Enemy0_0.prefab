@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectType: 2
   mass: 50
-  yg: 0.5
-  dc: 0.5
+  friction: 0
+  restitution: 0
   modelID: 0
   aiID: 0
   generateTurn: 0
