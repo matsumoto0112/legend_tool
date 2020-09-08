@@ -39,4 +39,10 @@ public class Graffiti : MapObject
 
         return text;
     }
+
+    private void OnValidate()
+    {
+        ModelChanger changer = this.transform.GetComponent<ModelChanger>();
+        changer.ChangeModel(textureID);
+    }
 }
