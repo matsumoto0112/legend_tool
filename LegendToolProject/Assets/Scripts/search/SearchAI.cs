@@ -57,6 +57,7 @@ public class SearchAI : MonoBehaviour
     public void SetLine()
     {
         if (line == null) return;
+        if (branch == null) return;
 
         // 重複と自信が分岐に含まれていたら削除
         branch = branch.Distinct().ToList();
@@ -102,7 +103,29 @@ public class SearchAI : MonoBehaviour
     {
         branch.RemoveAll(i => i == null);
     }
+    /// <summary>
+    /// ライン追加
+    /// </summary>
+    public void AddLine()
+    {
+        if (line != null) return;
+        line = gameObject.AddComponent<LineRenderer>();
+        SetLine();
+    }
     #endregion // ------------------------------------------------
+    /// <summary>
+    /// 分岐先設定
+    /// </summary>
+    public void AddBranch(SearchAI searchAI)
+    {
+        if (branch == null)
+        {
+            branch = new List<SearchAI>();
+        }
+        if (searchAI.transform == transform) return;
+        if (branch.Contains(searchAI)) return;
+        branch.Add(searchAI);
+    }
 
     #region Editor // ------------------------------------------------
     /// <summary>
